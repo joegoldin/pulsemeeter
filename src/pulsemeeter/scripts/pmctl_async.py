@@ -308,7 +308,7 @@ async def app_by_id(index: int, app_type: str):
             app.device_name = (await pulse.sink_info(app.sink)).name
         else:
             app = await pulse.source_output_info(index)
-            app.device_name = (await pulse.source_info(app.sink)).name
+            app.device_name = (await pulse.source_info(app.source)).name
 
     return app
 
@@ -337,7 +337,7 @@ async def list_apps(app_type: str):
             if app_type == 'sink_input':
                 app.device_name = (await pulse.sink_info(app.sink)).name
             else:
-                app.device_name = (await pulse.source_info(app.sink)).name
+                app.device_name = (await pulse.source_info(app.source)).name
 
             app_list.append(app)
     return app_list

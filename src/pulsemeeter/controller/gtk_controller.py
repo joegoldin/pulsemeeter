@@ -126,6 +126,14 @@ class GtkController(SignalModel):
         arrange_device = layout_manager.get_arrange_device(self.config_model.layout)
         device_widget = DeviceWidget(device_model)
         arrange_device(device_widget)
+        try:
+            in_ports = pmctl.get_ports('input', device_model.name)
+            out_ports = pmctl.get_ports('output', device_model.name)
+            if not in_ports and not out_ports:
+                device_widget.set_sensitive(False)
+                device_widget.set_tooltip_text('Device unavailable: no ports reporting')
+        except Exception as exc:  # pylint: disable=broad-except
+            LOG.warning('Could not check ports for %s: %s', device_model.name, exc)
         # arrange_device_settings(device_widget.popover)
         self.content.device_box[device_type].add_widget(device_id, device_widget)
         self.connect_device_gtk_events(device_type, device_id, device_widget)
