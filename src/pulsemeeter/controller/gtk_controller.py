@@ -91,7 +91,13 @@ class GtkController(SignalModel):
 
         self.create_content(self.config_model.layout)
         self.window = Gtk.Window(title='Pulsemeeter', application=application)
-        self.window.set_child(self.content)
+        scrolled = Gtk.ScrolledWindow()
+        scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
+        scrolled.set_propagate_natural_width(True)
+        scrolled.set_propagate_natural_height(True)
+        scrolled.set_max_content_height(800)
+        scrolled.set_child(self.content)
+        self.window.set_child(scrolled)
         self.connect_window_gtk_events()
 
         self.load_device_list()

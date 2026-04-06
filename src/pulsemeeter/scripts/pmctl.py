@@ -88,7 +88,8 @@ def link_channels(input_name: str, output_name: str, channel_map: str, state: bo
     output_ports = get_ports('input', output_name)
 
     if not input_ports or not output_ports:
-        raise RuntimeError(f'Ports not found for devices {input_name} {output_name}')
+        LOG.warning('Ports not found for devices %s %s, treating connection as disabled', input_name, output_name)
+        return False
 
     for pair in channel_map.split(' '):
         input_id, output_id = pair.split(':')
